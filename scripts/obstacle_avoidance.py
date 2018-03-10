@@ -65,8 +65,6 @@ def take_action(regions):
     msg.linear.x = linear_x
     msg.angular.z = angular_z
     pub.publish(msg)
-    
-    
 
 def main():
     global pub
