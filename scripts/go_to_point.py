@@ -6,8 +6,11 @@ from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist, Point
 from nav_msgs.msg import Odometry
 from tf import transformations
+from std_srvs.srv import *
 
 import math
+
+active_ = False
 
 # robot state variables
 position_ = Point()
@@ -16,8 +19,8 @@ yaw_ = 0
 state_ = 0
 # goal
 desired_position_ = Point()
-desired_position_.x = -3
-desired_position_.y = 7
+desired_position_.x = rospy.get_param('des_pos_x')
+desired_position_.y = rospy.get_param('des_pos_y')
 desired_position_.z = 0
 # parameters
 yaw_precision_ = math.pi / 90 # +/- 2 degree allowed
@@ -25,6 +28,15 @@ dist_precision_ = 0.3
 
 # publishers
 pub = None
+
+# service callbacks
+def go_to_point_switch(req):
+    global active_
+    active_ = req.data
+    res = SetBoolResponse()
+    res.success = True
+    res.message = 'Done!'
+    return res
 
 # callbacks
 def clbk_odom(msg):
@@ -90,7 +102,7 @@ def done():
     pub.publish(twist_msg)
 
 def main():
-    global pub
+    global pub, active_
     
     rospy.init_node('go_to_point')
     
@@ -98,18 +110,22 @@ def main():
     
     sub_odom = rospy.Subscriber('/odom', Odometry, clbk_odom)
     
+    srv = rospy.Service('go_to_point_switch', SetBool, go_to_point_switch)
+    
     rate = rospy.Rate(20)
     while not rospy.is_shutdown():
-        if state_ == 0:
-            fix_yaw(desired_position_)
-        elif state_ == 1:
-            go_straight_ahead(desired_position_)
-        elif state_ == 2:
-            done()
-            pass
+        if not active_:
+            continue
         else:
-            rospy.logerr('Unknown state!')
-            pass
+            if state_ == 0:
+                fix_yaw(desired_position_)
+            elif state_ == 1:
+                go_straight_ahead(desired_position_)
+            elif state_ == 2:
+                done()
+            else:
+                rospy.logerr('Unknown state!')
+        
         rate.sleep()
 
 if __name__ == '__main__':
