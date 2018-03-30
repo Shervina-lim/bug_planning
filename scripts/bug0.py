@@ -81,6 +81,9 @@ def main():
     sub_laser = rospy.Subscriber('/m2wr/laser/scan', LaserScan, clbk_laser)
     sub_odom = rospy.Subscriber('/odom', Odometry, clbk_odom)
     
+    rospy.wait_for_service('/go_to_point_switch')
+    rospy.wait_for_service('/wall_follower_switch')
+    
     srv_client_go_to_point_ = rospy.ServiceProxy('/go_to_point_switch', SetBool)
     srv_client_wall_follower_ = rospy.ServiceProxy('/wall_follower_switch', SetBool)
     
