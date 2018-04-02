@@ -7,5 +7,5 @@
     <param name="des_pos_y" value="$(arg des_y)" />
     <node pkg="motion_plan" type="follow_wall.py" name="wall_follower" />
     <node pkg="motion_plan" type="go_to_point.py" name="go_to_point" />
-    <node pkg="motion_plan" type="bug0.py" name="bug0" output="screen" />
+    <node pkg="motion_plan" type="bug1.py" name="bug1" output="screen" />
 </launch>
