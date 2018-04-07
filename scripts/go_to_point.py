@@ -60,10 +60,17 @@ def change_state(state):
     state_ = state
     print 'State changed to [%s]' % state_
 
+def normalize_angle(angle):
+    if(math.fabs(angle) > math.pi):
+        angle = angle - (2 * math.pi * angle) / (math.fabs(angle))
+    return angle
+
 def fix_yaw(des_pos):
     global yaw_, pub, yaw_precision_, state_
     desired_yaw = math.atan2(des_pos.y - position_.y, des_pos.x - position_.x)
-    err_yaw = desired_yaw - yaw_
+    err_yaw = normalize_angle(desired_yaw - yaw_)
+    
+    rospy.loginfo(err_yaw)
     
     twist_msg = Twist()
     if math.fabs(err_yaw) > yaw_precision_:
@@ -85,6 +92,7 @@ def go_straight_ahead(des_pos):
     if err_pos > dist_precision_:
         twist_msg = Twist()
         twist_msg.linear.x = 0.6
+        twist_msg.angular.z = 0.2 if err_yaw > 0 else -0.2
         pub.publish(twist_msg)
     else:
         print 'Position error: [%s]' % err_pos

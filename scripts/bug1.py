@@ -7,6 +7,8 @@ from geometry_msgs.msg import Point
 from sensor_msgs.msg import LaserScan
 from nav_msgs.msg import Odometry
 from tf import transformations
+from gazebo_msgs.msg import ModelState
+from gazebo_msgs.srv import SetModelState
 # import ros service
 from std_srvs.srv import *
 
@@ -17,6 +19,10 @@ srv_client_wall_follower_ = None
 yaw_ = 0
 yaw_error_allowed_ = 5 * (math.pi / 180) # 5 degrees
 position_ = Point()
+initial_position_ = Point()
+initial_position_.x = rospy.get_param('initial_x')
+initial_position_.y = rospy.get_param('initial_y')
+initial_position_.z = 0
 desired_position_ = Point()
 desired_position_.x = rospy.get_param('des_pos_x')
 desired_position_.y = rospy.get_param('des_pos_y')
@@ -98,9 +104,18 @@ def main():
     
     rospy.wait_for_service('/go_to_point_switch')
     rospy.wait_for_service('/wall_follower_switch')
+    rospy.wait_for_service('/gazebo/set_model_state')
     
     srv_client_go_to_point_ = rospy.ServiceProxy('/go_to_point_switch', SetBool)
     srv_client_wall_follower_ = rospy.ServiceProxy('/wall_follower_switch', SetBool)
+    srv_client_set_model_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+    
+    # set robot position
+    model_state = ModelState()
+    model_state.model_name = 'm2wr'
+    model_state.pose.position.x = initial_position_.x
+    model_state.pose.position.y = initial_position_.y
+    resp = srv_client_set_model_state(model_state)
     
     # initialize going to the point
     change_state(0)
