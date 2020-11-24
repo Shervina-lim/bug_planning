@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>motion_plan</name>
+  <name>bug_planning</name>
   <version>0.0.0</version>
   <description>The motion_plan package</description>
 
