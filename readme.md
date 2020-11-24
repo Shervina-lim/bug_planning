@@ -1,5 +1,4 @@
 # Bug_planner
----
 This package is modified from [motion_plan](https://bitbucket.org/theconstructcore/two-wheeled-robot-motion-planning/src/master/) to be compaitable with robot with 360 degrees laserscan in pybullet environment.
 
 Modifications made:
@@ -11,7 +10,7 @@ Modifications made:
 Only bug2 algorithm extracted from original package. 
 
 ## Installation
----
+
 Download this package in your workspace and catkin_make it.
 	
 	$ cd catkin_ws/src
@@ -19,7 +18,7 @@ Download this package in your workspace and catkin_make it.
 	$ cd .. && catkin_make
 
 ## Parameters
----
+
 You can change parameters and topic names from the launch file by following the format in bug2.launch.
 
 ### Topic Names
@@ -36,7 +35,7 @@ You can change parameters and topic names from the launch file by following the 
 - go_vw: angular velocity of the robot when it is re-positioning while moving to the goal
 
 ## Using bug_planner
----
+
 
 	$ roslaunch bug_planning bug2.launch 
 
