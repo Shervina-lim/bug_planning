@@ -2,9 +2,10 @@
 This package is modified from [motion_plan](https://bitbucket.org/theconstructcore/two-wheeled-robot-motion-planning/src/master/) to be compaitable with robot with 360 degrees laserscan in pybullet environment.
 
 Modifications made:
-- Used odometry for localisation, don't need to give initial values 
-- subscribes to /goal topic (PoseStamped msg)
+- Subscribes to **/odom** and used odometry for localisation, don't need to give initial values.
+- Subscribes to **/goal** topic (PoseStamped msg)
 - Ability to change topic names and velocity limits in the launch file.
+- Divided 360 degrees laserscan to 10 sections.
 
 ### Note:
 Only bug2 algorithm extracted from original package. 
