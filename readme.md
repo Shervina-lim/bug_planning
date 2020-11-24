@@ -1,5 +1,5 @@
 # Bug_planner
-This package is modified from [motion_plan](https://bitbucket.org/theconstructcore/two-wheeled-robot-motion-planning/src/master/) to be compaitable with robot with 360 degrees laserscan in pybullet environment.
+This package is modified from [motion_plan](https://bitbucket.org/theconstructcore/two-wheeled-robot-motion-planning/src/master/) to be compaitable with robot with 360 degrees laserscan in pybullet environment. For detailed guide on how this works, refer to this [playlist](https://www.youtube.com/playlist?list=PLK0b4e05LnzY2I4sXWTOA4_82cMh6tL-5).
 
 Modifications made:
 - Subscribes to **/odom** and used odometry for localisation, don't need to give initial values.
